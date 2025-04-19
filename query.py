@@ -7,6 +7,7 @@ from langchain_qdrant import QdrantVectorStore
 from splitter.create_database import generate_embedding
 from splitter.split_data import splitter_main
 from system_prompt.tools import tools
+from tools.execution_tools import run_command
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
@@ -22,9 +23,18 @@ messages = [
     {"role": "system", "content": system_prompt},
 ]
 
-def create(code_path: str):
-    # I want to call the function to create the embedding fro here passing code_path as parameter
-    generate_embedding(code_path=code_path)
+def create(git_url: str):
+    try:
+        run_command(f"git clone {git_url}")
+    except Exception as e:
+        print(f"Error cloning repository: {e}")
+        return
+
+    repo_name = git_url.split('/')[-1]
+    if repo_name.endswith('.git'):
+        repo_name = repo_name[:-4]
+    cloned_repo_path = f"./{repo_name}"
+    generate_embedding(code_path=cloned_repo_path)
 
     while True:
         messages.append({ "role": "user", "content": "Analyse my codebase structure and learn how the features are implemented. Then create me a detailed documentation for it." })

@@ -35,7 +35,7 @@ def create_and_store_embeddings(documents: list, embedder: OpenAIEmbeddings, qdr
     print(colored(f"Initializing Qdrant client for collection '{collection_name}' at {qdrant_url}", "cyan"))
     print(colored(f"Generating embeddings using '{EMBEDDING_MODEL}' and uploading...", "cyan"))
     try:
-        vector_store = QdrantVectorStore.from_documents(
+        QdrantVectorStore.from_documents(
             documents=documents,
             embedding=embedder,
             url=qdrant_url,

@@ -13,16 +13,17 @@ embedder = OpenAIEmbeddings(
     api_key=api_key
 )
 
-retriever = QdrantVectorStore.from_existing_collection(
-    url="http://localhost:6333",
-    collection_name="code_repo_embeddings",
-    embedding=embedder
-)
 
 def recall_code(term: str):
     """
     Searches the codebase vector store for context related to the input term.
     """
+    retriever = QdrantVectorStore.from_existing_collection(
+        url="http://localhost:6333",
+        collection_name="code_repo_embeddings",
+        embedding=embedder
+    )
+    
     if not term or not isinstance(term, str):
         print("Warning: recall_code received invalid input term.")
         return []
@@ -40,7 +41,7 @@ def recall_code(term: str):
     # for i in search_result:
     #     print(f"Recall Code - Search result: {i} \n")
 
-    return str(search_result)
+    return (search_result)
 
 def recall_doc(term: str):
     print("recalling doc")
