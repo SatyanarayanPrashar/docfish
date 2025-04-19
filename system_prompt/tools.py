@@ -7,18 +7,6 @@ tools = {
         "fn": run_command,
         "description": "Runs a shell command and returns the result."
     },
-    # "create_directory_in_output": {
-    #     "fn": create_directory_in_output,
-    #     "description": " Creates a directory in the output folder if it doesn't already exist."
-    # },
-    # "create_file_in_directory": {
-    #     "fn": create_file_in_directory,
-    #     "description": "Creates a file in the specified directory with the given content."
-    # },
-    # "read_file_content": {
-    #     "fn": read_file_content,
-    #     "description": "Reads the content of a file."
-    # },
     "recall_code": {
         "fn": recall_code,
         "description": "Searches the codebase for specific function/feature to get more context"
@@ -28,7 +16,3 @@ tools = {
         "description": "Searches the documentation for specific feature to get more context"
     },
 }
-
-
-# <recall_code>: Searches the codebase for specific function/feature to get more context
-# <recall_doc>: Searches the documentation for specific feature to get more context
