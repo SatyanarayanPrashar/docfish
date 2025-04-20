@@ -38,35 +38,37 @@ def create(git_url: str):
 
     while True:
         messages.append({ "role": "user", "content": "Analyse my codebase structure and learn how the features are implemented. Then create me a detailed documentation for it." })
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            response_format={"type": "json_object"},
-            messages=messages
-        )
 
-        parsed_output = json.loads(response.choices[0].message.content)
-        messages.append({ "role": "assistant", "content": json.dumps(parsed_output) })
+        while True:
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                response_format={"type": "json_object"},
+                messages=messages
+            )
 
-        if parsed_output.get("stage") == "Analysis":
-            print(f"🔍: {parsed_output.get("content")}")
-            continue
+            parsed_output = json.loads(response.choices[0].message.content)
+            messages.append({ "role": "assistant", "content": json.dumps(parsed_output) })
 
-        if parsed_output.get("stage") == "Planning":
-            print(f"🧠: {parsed_output.get("content")}")
-            continue
-        
-        if parsed_output.get("stage") == "Executing":
-            tool_name = parsed_output.get("function")
-            tool_input = parsed_output.get("input")
-
-            if tools.get(tool_name, False) != False:
-                output = tools[tool_name].get("fn")(tool_input)
-                messages.append({ "role": "user", "content": json.dumps({ "stage": "Executing", "output":  output}) })
+            if parsed_output.get("stage") == "Analysis":
+                print(f"🔍: {parsed_output.get("content")}")
                 continue
-            else:
-                print(f"Tool not found: {parsed_output}")
+
+            if parsed_output.get("stage") == "Planning":
+                print(f"🧠: {parsed_output.get("content")}")
+                continue
+            
+            if parsed_output.get("stage") == "Executing":
+                tool_name = parsed_output.get("function")
+                tool_input = parsed_output.get("input")
+
+                if tools.get(tool_name, False) != False:
+                    output = tools[tool_name].get("fn")(tool_input)
+                    messages.append({ "role": "user", "content": json.dumps({ "stage": "Executing", "output":  output}) })
+                    continue
+                else:
+                    print(f"Tool not found: {parsed_output}")
+                    break
+            
+            if parsed_output.get("step") == "output":
+                print(f"🤖: {parsed_output.get("content")}")
                 break
-        
-        if parsed_output.get("step") == "output":
-            print(f"🤖: {parsed_output.get("content")}")
-            break
