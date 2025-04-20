@@ -81,7 +81,7 @@ def list_output_structure():
         dict: A dictionary containing the structure of the output folder.
     """
     current_directory = os.getcwd()
-    output_directory = os.path.join(current_directory, "output")
+    output_directory = os.path.join(current_directory, "clone_repos")
 
     if not os.path.exists(output_directory):
         return {"status": "error", "message": "Output directory does not exist."}

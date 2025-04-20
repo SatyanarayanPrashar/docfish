@@ -1,5 +1,4 @@
-from tools.create_tools import create_directory_in_output, create_file_in_directory, read_file_content
-from tools.execution_tools import run_command
+from tools.execution_tools import create_plan_file, read_plan_file, run_command
 from tools.rag_tools import recall_code, recall_doc
 
 tools = {
@@ -14,5 +13,13 @@ tools = {
     "recall_doc": {
         "fn": recall_doc,
         "description": "Searches the documentation for specific feature to get more context"
+    },
+    "create_plan_file": {
+        "fn": create_plan_file,
+        "description": "Creates a plan file with the given content."
+    },
+    "recall_doc": {
+        "fn": read_plan_file,
+        "description": "Reads the content of the plan file."
     },
 }

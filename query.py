@@ -1,21 +1,16 @@
 import json
-from langchain.embeddings import OpenAIEmbeddings
 from dotenv import load_dotenv
 import os
 import openai
-from langchain_qdrant import QdrantVectorStore
+from termcolor import colored
 from splitter.create_database import generate_embedding
-from splitter.split_data import splitter_main
 from system_prompt.tools import tools
 from tools.execution_tools import run_command
+from system_prompt.base_prompt import system_prompt
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 openai.api_key = api_key
-
-# Load the system prompt from the system_prompt.txt file
-with open("system_prompt/system_prompt.txt", "r") as file:
-    system_prompt = file.read()
 
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -24,17 +19,19 @@ messages = [
 ]
 
 def create(git_url: str):
-    try:
-        run_command(f"git clone {git_url}")
-    except Exception as e:
-        print(f"Error cloning repository: {e}")
-        return
+    # try:
+    #     repo_name = git_url.split('/')[-1]
+    #     output_dir = os.path.join(os.getcwd(), "clone_repos")
+    #     code_path = os.path.join(output_dir, repo_name)
 
-    repo_name = git_url.split('/')[-1]
-    if repo_name.endswith('.git'):
-        repo_name = repo_name[:-4]
-    cloned_repo_path = f"./{repo_name}"
-    generate_embedding(code_path=cloned_repo_path)
+    #     run_command(f"git clone {git_url} {code_path}")
+    # except Exception as e:
+    #     print(f"Error cloning repository: {e}")
+    #     return
+
+    # generate_embedding(code_path=code_path, repo_name=repo_name)
+
+    # print(colored(f"Codebase structure generated successfully at. {code_path}", "green"))
 
     while True:
         messages.append({ "role": "user", "content": "Analyse my codebase structure and learn how the features are implemented. Then create me a detailed documentation for it." })
@@ -57,7 +54,7 @@ def create(git_url: str):
                 print(f"🧠: {parsed_output.get("content")}")
                 continue
             
-            if parsed_output.get("stage") == "Executing":
+            if parsed_output.get("function"):
                 tool_name = parsed_output.get("function")
                 tool_input = parsed_output.get("input")
 

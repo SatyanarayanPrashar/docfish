@@ -15,7 +15,6 @@ if not openai.api_key:
 
 CODEBASE_PATH = "path/to/your/codebase_repo"
 QDRANT_URL = os.environ.get("QDRANT_URL", "http://localhost:6333")
-COLLECTION_NAME = "my_codebase_collection"
 EMBEDDING_MODEL = "text-embedding-3-large"
 
 def load_codebase_documents(repo_path: str):
@@ -46,24 +45,29 @@ def create_and_store_embeddings(documents: list, embedder: OpenAIEmbeddings, qdr
         print(colored(f"Error interacting with Qdrant: {e}", "red"))
         print(colored("Please ensure Qdrant is running and accessible at the specified URL.", "yellow"))
 
-def generate_embedding(code_path: str):
-    print(colored("--- Starting Codebase Embedding Pipeline ---", "magenta"))
-    code_documents = load_codebase_documents(code_path)
-    if not code_documents:
-        print(colored("Pipeline halted as no documents were loaded.", "red"))
+def generate_embedding(code_path: str, repo_name: str):
+    try:
+        print(colored("--- Starting Codebase Embedding Pipeline ---", "magenta"))
+        code_documents = load_codebase_documents(code_path)
+        if not code_documents:
+            print(colored("Pipeline halted as no documents were loaded.", "red"))
+            return
+        print(colored(f"Initializing embedding model: {EMBEDDING_MODEL}", "cyan"))
+        embedder = OpenAIEmbeddings(
+            model=EMBEDDING_MODEL,
+            api_key=openai.api_key
+        )
+        create_and_store_embeddings(
+            documents=code_documents,
+            embedder=embedder,
+            qdrant_url=QDRANT_URL,
+            # collection_name=repo_name
+            collection_name="lib_resume_builder_AIHawk.git"
+        )
+        print(colored("--- Codebase Embedding Pipeline Finished ---", "magenta"))
+    except Exception as e:
+        print(f"Error generating embedding: {e}")
         return
-    print(colored(f"Initializing embedding model: {EMBEDDING_MODEL}", "cyan"))
-    embedder = OpenAIEmbeddings(
-        model=EMBEDDING_MODEL,
-        api_key=openai.api_key
-    )
-    create_and_store_embeddings(
-        documents=code_documents,
-        embedder=embedder,
-        qdrant_url=QDRANT_URL,
-        collection_name=COLLECTION_NAME
-    )
-    print(colored("--- Codebase Embedding Pipeline Finished ---", "magenta"))
 
 if __name__ == "__main__":
     if CODEBASE_PATH == "path/to/your/codebase_repo":

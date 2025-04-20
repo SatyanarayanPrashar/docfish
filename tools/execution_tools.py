@@ -54,3 +54,36 @@ def run_command(command: str, cwd: str = None, timeout: int = 10) -> dict:
             'status': 'error',
             'message': str(e)
         }
+    
+def create_plan_file(plan: str):
+    """
+    Creates a plan file with the given content.
+
+    Args:
+        plan (str): The content of the plan.
+    """
+    if isinstance(plan, str):
+        plan = plan.encode().decode('unicode_escape')
+
+    # Create and write to the file
+    with open("plan.txt", "w") as file:
+        file.write(plan)
+    
+    print(colored(f"Plan file created.", 'green'))
+
+def read_plan_file():
+    """
+    Reads the content of the plan file.
+
+    Returns:
+        str: The content of the plan file.
+    """
+    with open("plan.txt", "r") as file:
+        plan = file.read()
+
+    print(f"plan: {plan}")
+    if not plan:
+        print(colored("Plan file is empty.", 'red'))
+        return "Plan is not created yet, use create_plan_file to create a plan file."
+
+    return plan
