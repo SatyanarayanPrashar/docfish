@@ -14,12 +14,12 @@ tools = {
         "fn": recall_doc,
         "description": "Searches the documentation for specific feature to get more context"
     },
-    "create_plan_file": {
-        "fn": create_plan_file,
-        "description": "Creates a plan file with the given content."
-    },
     "recall_doc": {
         "fn": read_plan_file,
         "description": "Reads the content of the plan file."
+    },
+    "create_plan_file": {
+        "fn": create_plan_file,
+        "description": "Creates a plan file with the given content."
     },
 }
