@@ -61,8 +61,8 @@ def generate_embedding(code_path: str, repo_name: str):
             documents=code_documents,
             embedder=embedder,
             qdrant_url=QDRANT_URL,
-            # collection_name=repo_name
-            collection_name="lib_resume_builder_AIHawk.git"
+            collection_name=repo_name
+            # collection_name="lib_resume_builder_AIHawk.git"
         )
         print(colored("--- Codebase Embedding Pipeline Finished ---", "magenta"))
     except Exception as e:

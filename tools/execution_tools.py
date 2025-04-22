@@ -71,9 +71,27 @@ def create_plan_file(plan: str):
     
     print(colored(f"Plan file created.", 'green'))
 
-def read_plan_file():
+def read_plan_file(dummy: str = None):
     """
     Reads the content of the plan file.
+
+    Returns:
+        str: The content of the plan file.
+    """
+    print(colored(f"Reading plan file... {dummy}", 'yellow'))
+    with open("plan.txt", "r") as file:
+        plan = file.read()
+
+    # print(f"plan: {plan}")
+    if not plan:
+        print(colored("Plan file is empty.", 'red'))
+        return "Plan is not created yet, use create_plan_file to create a plan file."
+    
+    return plan
+
+def update_plan_file(new_step: str = None):
+    """
+    Updates the content of the plan file.
 
     Returns:
         str: The content of the plan file.
@@ -81,9 +99,15 @@ def read_plan_file():
     with open("plan.txt", "r") as file:
         plan = file.read()
 
-    print(f"plan: {plan}")
     if not plan:
         print(colored("Plan file is empty.", 'red'))
         return "Plan is not created yet, use create_plan_file to create a plan file."
 
-    return plan
+    updated_plan = plan + "\n" + new_step
+
+    with open("plan.txt", "w") as file:
+        file.write(updated_plan)
+
+    print(colored(f"Plan file updated with this step. {new_step}", 'green'))
+
+    return "Plan file updated successfully."

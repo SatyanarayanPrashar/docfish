@@ -1,5 +1,5 @@
 from tools.create_tools import list_output_structure, read_file_content
-from tools.execution_tools import create_plan_file, read_plan_file, run_command
+from tools.execution_tools import create_plan_file, read_plan_file, run_command, update_plan_file
 from tools.rag_tools import recall_code, recall_doc
 
 tools = {
@@ -26,5 +26,9 @@ tools = {
     "create_plan_file": {
         "fn": create_plan_file,
         "description": "Creates a plan file with the given content."
+    },
+    "update_plan_file": {
+        "fn": update_plan_file,
+        "description": "Updates the plan file with the given step."
     },
 }

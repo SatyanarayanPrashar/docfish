@@ -19,23 +19,23 @@ messages = [
 ]
 
 def create(git_url: str):
-    # try:
-    #     repo_name = git_url.split('/')[-1]
-    #     output_dir = os.path.join(os.getcwd(), "clone_repos")
-    #     code_path = os.path.join(output_dir, repo_name)
+    try:
+        repo_name = git_url.split('/')[-1]
+        output_dir = os.path.join(os.getcwd(), "clone_repos")
+        code_path = os.path.join(output_dir, repo_name)
 
-    #     run_command(f"git clone {git_url} {code_path}")
-    # except Exception as e:
-    #     print(f"Error cloning repository: {e}")
-    #     return
+        # run_command(f"git clone {git_url} {code_path}")
+    except Exception as e:
+        print(f"Error cloning repository: {e}")
+        return
 
-    # generate_embedding(code_path=code_path, repo_name=repo_name)
+    generate_embedding(code_path=code_path, repo_name="attendanceSystem.git")
 
-    # print(colored(f"Codebase structure generated successfully at. {code_path}", "green"))
+    print(colored(f"Codebase structure generated successfully at. {code_path}", "green"))
 
     while True:
-        messages.append({ "role": "user", "content": "Analyse my codebase structure and learn how the features are implemented. Then create me a detailed documentation for it." })
 
+        messages.append({ "role": "user", "content": "The plan is already created and is saved at plan file. You can start directly at documentor_mode." })
         while True:
             response = client.chat.completions.create(
                 model="gpt-4o",

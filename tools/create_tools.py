@@ -1,5 +1,7 @@
 import os
 
+from termcolor import colored
+
 def create_directory_in_output(directory_name: str):
     """
     Creates a directory in the output folder if it doesn't already exist.
@@ -73,13 +75,14 @@ def generate_tree(directory, prefix=""):
             tree += generate_tree(entry_path, prefix + extension)
     return tree
 
-def list_output_structure():
+def list_output_structure(dummy: str = None):
     """
     Lists the structure of the output folder in a tree format.
 
     Returns:
         dict: A dictionary containing the structure of the output folder.
     """
+    print(colored(f"Listing the structure of the output folder... {dummy}", "green"))
     current_directory = os.getcwd()
     output_directory = os.path.join(current_directory, "clone_repos")
 
@@ -103,7 +106,8 @@ def read_file_content(file_path: str):
     Returns:
         str: The content of the file.
     """
-    with open(file_path, "r") as file:
+    path = "/Users/satya/Desktop/pythonProjects/docfish/clone_repos/attendanceSystem.git/" + file_path
+    with open(path, "r") as file:
         content = file.read()
     
     # Return the list of directories
