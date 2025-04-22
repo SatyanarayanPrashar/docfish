@@ -46,26 +46,54 @@ def create(git_url: str):
             parsed_output = json.loads(response.choices[0].message.content)
             messages.append({ "role": "assistant", "content": json.dumps(parsed_output) })
 
-            if parsed_output.get("stage") == "Analysis":
+            if parsed_output.get("mode") == "planner_mode":
                 print(f"🔍: {parsed_output.get("content")}")
-                continue
-
-            if parsed_output.get("stage") == "Planning":
-                print(f"🧠: {parsed_output.get("content")}")
-                continue
-            
-            if parsed_output.get("function"):
                 tool_name = parsed_output.get("function")
                 tool_input = parsed_output.get("input")
+                if tool_name:
+                    if tools.get(tool_name, False) != False:
+                        output = tools[tool_name].get("fn")(tool_input)
+                        messages.append({ "role": "user", "content": json.dumps({ "mode": "planner_mode", "output":  output}) })
+                        continue
+                    else:
+                        print(f"Tool not found: {parsed_output}")
+                        break
+                continue
 
-                if tools.get(tool_name, False) != False:
-                    output = tools[tool_name].get("fn")(tool_input)
-                    messages.append({ "role": "user", "content": json.dumps({ "stage": "Executing", "output":  output}) })
-                    continue
-                else:
-                    print(f"Tool not found: {parsed_output}")
-                    break
+            print("\n\n")
+
+            if parsed_output.get("mode") == "judge_mode":
+                print(f"😵‍💫: {parsed_output.get("content")}")
+                tool_name = parsed_output.get("function")
+                tool_input = parsed_output.get("input")
+                if tool_name:
+                    if tools.get(tool_name, False) != False:
+                        output = tools[tool_name].get("fn")(tool_input)
+                        messages.append({ "role": "user", "content": json.dumps({ "mode": "judge_mode", "output":  output}) })
+                        continue
+                    else:
+                        print(f"Tool not found: {parsed_output}")
+                        break
+                continue
+
+            print("\n\n")
+
+            if parsed_output.get("mode") == "documentor_mode":
+                print(f"📝: {parsed_output.get("content")}")
+                tool_name = parsed_output.get("function")
+                tool_input = parsed_output.get("input")
+                if tool_name:
+                    if tools.get(tool_name, False) != False:
+                        output = tools[tool_name].get("fn")(tool_input)
+                        messages.append({ "role": "user", "content": json.dumps({ "mode": "documentor_mode", "output":  output}) })
+                        continue
+                    else:
+                        print(f"Tool not found: {parsed_output}")
+                        break
+                continue
+
+            print("\n\n")
             
-            if parsed_output.get("step") == "output":
-                print(f"🤖: {parsed_output.get("content")}")
+            if parsed_output.get("step") == "completed":
+                print(f"🤖: We are done")
                 break
