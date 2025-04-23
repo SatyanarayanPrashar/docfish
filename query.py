@@ -16,19 +16,17 @@ openai.api_key = api_key
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def create(git_url: str):
-    # try:
-    #     repo_name = git_url.split('/')[-1]
-    #     output_dir = os.path.join(os.getcwd(), "clone_repos")
-    #     code_path = os.path.join(output_dir, repo_name)
+    try:
+        repo_name = git_url.split('/')[-1]
+        output_dir = os.path.join(os.getcwd(), "clone_repos")
+        code_path = os.path.join(output_dir, repo_name)
 
-    #     # run_command(f"git clone {git_url} {code_path}")
-    # except Exception as e:
-    #     print(f"Error cloning repository: {e}")
-    #     return
+        # run_command(f"git clone {git_url} {code_path}")
+    except Exception as e:
+        print(f"Error cloning repository: {e}")
+        return
 
-    # generate_embedding(code_path=code_path, repo_name="attendanceSystem.git")
-
-    # print(colored(f"Codebase structure generated successfully at. {code_path}", "green"))
+    generate_embedding(code_path=code_path, repo_name="attendanceSystem.git")
 
     while True:
         try:
