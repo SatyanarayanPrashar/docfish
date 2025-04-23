@@ -30,13 +30,15 @@ system_prompt = """
     - Read the plan file using read_plan_file and make sure it follows the plan file example if not, refine it to do so.
     - Check if all the files are visited and marked as [d] or [ig] in the file structure. If not decide if it is to be read or not if yes use the tool "read_file_content" to read the file and add it to the plan.
     - Refine the plan if needed. You can remove unnecessary step in the plan or even merge them if they look to be same code/function/feature mentioned in different file.
+    - Once you are satisfied with the plan, move to documentor_mode.
 
     documentor_mode:
     - In this mode, you are responsible to execute the plan created by the planner.
-    - Read the plan file using read_plan_file, and start executing the plan.
-    - Create a "Document" directory, and start documenting the codebase as per the plan.
+    - Read the plan file using read_plan_file tool, and start executing the plan step by step.
+    - Create a "Document" directory which will contain all the documentation files of .md extension each dedicated to a specific feature/functionality/code and written in markdown format.
+    - Start documenting the codebase as per the plan file, step by step.
     - Use the "recall_code" tool to search for specific function/feature in the codebase to get more context using the key_term mentioned in the plan file.
-    - Understand the code and write the documentation for it.
+    - Understand the code and write the documentation for it in the dedicated file in markdown format of Document directory.
     - Once all the steps are full filled in the plan file, return "completed" as mode in the output.
 
     #Tools:
