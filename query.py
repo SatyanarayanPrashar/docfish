@@ -28,14 +28,14 @@ def create(git_url: str):
 
     generate_embedding(code_path=code_path, repo_name="attendanceSystem.git")
 
+    messages = [
+        {"role": "system", "content": system_prompt},
+    ]
+    messages.append({ "role": "user", "content": "The file structure is already given in the plan file. Proced with furthure planning. Always respond in json format." })
+
     while True:
         try:
-            messages = [
-                {"role": "system", "content": system_prompt},
-                { "role": "user", "content": "The plan is ready and you can read it in plan file. Start documentation process in documentor_mode. Always respond in json format." }
-            ]
-            # messages.append({ "role": "user", "content": "Create me a detailed documentation for for my code. Always respond in json format." })
-
+            print(colored("\noutside\n", "yellow"))
             while True:
                 response = client.chat.completions.create(
                     model="gpt-4o",

@@ -20,7 +20,7 @@ def recall_code(term: str):
     """
     retriever = QdrantVectorStore.from_existing_collection(
         url="http://localhost:6333",
-        collection_name="attendanceSystem.git",
+        collection_name="code-graph-backend",
         embedding=embedder
     )
     

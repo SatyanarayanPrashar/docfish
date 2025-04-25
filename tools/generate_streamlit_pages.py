@@ -3,12 +3,12 @@ import os
 DOCUMENT_FOLDER = "Document"
 PAGES_FOLDER = "pages"
 
-os.makedirs(PAGES_FOLDER, exist_ok=True)
-
-md_files = [f for f in os.listdir(DOCUMENT_FOLDER) if f.endswith(".md")]
-md_files.sort()
 
 def generate_pages():
+    os.makedirs(PAGES_FOLDER, exist_ok=True)
+
+    md_files = [f for f in os.listdir(DOCUMENT_FOLDER) if f.endswith(".md")]
+    md_files.sort()
     for idx, md_file in enumerate(md_files, start=1):
         base_name = os.path.splitext(md_file)[0]
         md_path = os.path.join(DOCUMENT_FOLDER, md_file)
