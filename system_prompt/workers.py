@@ -1,5 +1,5 @@
-from agents.worker_1_planner import planner_worker
-from agents.worker_2 import executor_worker
+from agents.worker_planner import planner_worker
+from agents.worker_executer import executor_worker
 
 workers = {
     "planner_worker": {

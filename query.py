@@ -1,20 +1,12 @@
 import json
-from dotenv import load_dotenv
-import os
-import openai
 from termcolor import colored
+from agents.base_llm import base_llm_call
 from splitter.create_database import generate_embedding
 from system_prompt.workers import workers
 from system_prompt.tools import tools
 from tools.execution_tools import run_command
 from system_prompt.base_prompt import system_prompt
 from tools.generate_streamlit_pages import generate_pages
-
-load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
-openai.api_key = api_key
-
-client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def create(git_url: str):
     # try:
@@ -32,18 +24,14 @@ def create(git_url: str):
     messages = [
         {"role": "system", "content": system_prompt},
     ]
-    messages.append({ "role": "user", "content": "The file structure is already given in the plan file. Proced with furthure planning. Always respond in json format." })
+    messages.append({ "role": "user", "content": "Create me the documentation for this codebase." })
 
     while True:
         try:
             while True:
-                response = client.chat.completions.create(
-                    model="gpt-4o-mini",
-                    response_format={"type": "json_object"},
-                    messages=messages
-                )
+                response = base_llm_call(messages)
 
-                parsed_output = json.loads(response.choices[0].message.content)
+                parsed_output = json.loads(response)
                 messages.append({ "role": "assistant", "content": json.dumps(parsed_output) })
 
                 print(f"🤖: {parsed_output.get('content')}")
