@@ -27,15 +27,16 @@ def planner_worker(message: str) -> str:
                     if tool_name:
                         if tools.get(tool_name):
                             output = tools[tool_name].get("fn")(tool_input)
+                            print(colored(f"tool called: {tool_name}, input: {tool_input}, output: {output} \n\n", "red"))
                             messages.append({
                                 "role": "assistant",
                                 "content": json.dumps({
-                                    "agent": "planner_worker",
+                                    "agent": "planner",
                                     "output": output
                                 })
                             })
 
-                            if output == "Plan created successfully.":
+                            if output == "The plan is ready":
                                 print(colored("✅ Plan created. Exiting...", "green"))
                                 break
                             continue

@@ -8,7 +8,7 @@ from tools.execution_tools import run_command
 from system_prompt.base_prompt import system_prompt
 from tools.generate_streamlit_pages import generate_pages
 
-def create(git_url: str):
+def create(mssg: str):
     # try:
     #     repo_name = git_url.split('/')[-1]
     #     output_dir = os.path.join(os.getcwd(), "clone_repos")
@@ -24,7 +24,7 @@ def create(git_url: str):
     messages = [
         {"role": "system", "content": system_prompt},
     ]
-    messages.append({ "role": "user", "content": "Create me the documentation for this codebase." })
+    messages.append({ "role": "user", "content": mssg or "Create me the documentation for this codebase." })
 
     while True:
         try:

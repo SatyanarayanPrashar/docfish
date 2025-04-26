@@ -1,3 +1,5 @@
+import json
+import os
 import subprocess
 
 from termcolor import colored
@@ -54,40 +56,39 @@ def run_command(command: str, cwd: str = None, timeout: int = 10) -> dict:
             'status': 'error',
             'message': str(e)
         }
+
+## Decripted
+# def create_plan_file(plan: str):
+#     """
+#     Creates a plan file with the given content.
+
+#     Args:
+#         plan (str): The content of the plan.
+#     """
+#     if isinstance(plan, str):
+#         plan = plan.encode().decode('unicode_escape')
+
+#     # Create and write to the file
+#     with open("plan.txt", "w") as file:
+#         file.write(plan)
     
-def create_plan_file(plan: str):
-    """
-    Creates a plan file with the given content.
+#     print(colored(f"Plan file created.", 'green'))
 
-    Args:
-        plan (str): The content of the plan.
-    """
-    if isinstance(plan, str):
-        plan = plan.encode().decode('unicode_escape')
-
-    # Create and write to the file
-    with open("plan.txt", "w") as file:
-        file.write(plan)
-    
-    print(colored(f"Plan file created.", 'green'))
-
-def read_plan_file(dummy: str = None):
+def read_plan_file(field: str = None):
     """
     Reads the content of the plan file.
 
     Returns:
         str: The content of the plan file.
     """
-    print(colored(f"Reading plan file... {dummy}", 'yellow'))
-    with open("plan.txt", "r") as file:
-        plan = file.read()
-
-    # print(f"plan: {plan}")
-    if not plan:
-        print(colored("Plan file is empty.", 'red'))
-        return "Plan is not created yet, use create_plan_file to create a plan file."
-    
-    return plan
+    print(colored(f"Reading {field}", 'yellow'))
+    with open("plan.json", 'r') as file:
+            data = json.load(file)
+        
+    if field in data:
+        return {field: data[field]}
+    else:
+        return "All the steps are executed."
 
 def update_plan_file(new_step: str = None):
     """
@@ -96,18 +97,19 @@ def update_plan_file(new_step: str = None):
     Returns:
         str: The content of the plan file.
     """
-    with open("plan.txt", "r") as file:
-        plan = file.read()
+    if os.path.exists("plan.json"):
+        with open("plan.json", 'r') as file:
+            data = json.load(file)
+    else:
+        data = {}
 
-    if not plan:
-        print(colored("Plan file is empty.", 'red'))
-        return "Plan is not created yet, use create_plan_file to create a plan file."
+    step_numbers = [int(key[4:]) for key in data.keys() if key.startswith('step') and key[4:].isdigit()]
+    next_step = max(step_numbers) + 1 if step_numbers else 1
 
-    updated_plan = plan + "\n" + new_step
+    data[f'step{next_step}'] = new_step
 
-    with open("plan.txt", "w") as file:
-        file.write(updated_plan)
+    with open("plan.json", 'w') as file:
+        json.dump(data, file, indent=4)
 
-    print(colored(f"Plan file updated with this step. {new_step}", 'green'))
-
-    return "Plan file updated successfully."
+    print(f"Added as step{next_step}")
+    return f"Added as step{next_step}"
