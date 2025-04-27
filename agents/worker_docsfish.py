@@ -1,30 +1,38 @@
 import json
+import os
 from termcolor import colored
 from agents.base_llm import base_llm_call
 from splitter.create_database import generate_embedding
-from system_prompt.workers import workers
 from system_prompt.tools import tools
 from tools.execution_tools import run_command
-from system_prompt.base_prompt import system_prompt
+from system_prompt.docsfish_prompt import system_prompt
 from tools.generate_streamlit_pages import generate_pages
+from tools.structure_tools import list_output_structure
 
-def create(mssg: str):
-    # try:
-    #     repo_name = git_url.split('/')[-1]
-    #     output_dir = os.path.join(os.getcwd(), "clone_repos")
-    #     code_path = os.path.join(output_dir, repo_name)
+def worker_docsfish(git_url: str, mssg: str = "Create me the documentation for this codebase"):
+    from system_prompt.workers import workers
 
-    #     run_command(f"git clone {git_url} {code_path}")
-    # except Exception as e:
-    #     print(f"Error cloning repository: {e}")
-    #     return
+    print(git_url)
 
-    # generate_embedding(code_path=code_path, repo_name="attendanceSystem.git")
+    if git_url:
+        try:
+            repo_name = git_url.split('/')[-1].replace('.git', '')
+            output_dir = os.path.join(os.getcwd(), "clone_repos")
+            code_path = os.path.join(output_dir, repo_name)
+
+            run_command(f"git clone {git_url} {code_path}")
+        except Exception as e:
+            print(f"Error cloning repository: {e}")
+            return
+
+        generate_embedding(code_path=code_path, repo_name="attendanceSystem.git")
+
+    structure_tree = list_output_structure() 
 
     messages = [
         {"role": "system", "content": system_prompt},
     ]
-    messages.append({ "role": "user", "content": mssg or "Create me the documentation for this codebase." })
+    messages.append({ "role": "user", "content": mssg + "\n" + structure_tree })
 
     while True:
         try:

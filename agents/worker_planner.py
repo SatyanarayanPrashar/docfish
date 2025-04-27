@@ -2,9 +2,10 @@ from termcolor import colored
 import json
 from agents.base_llm import base_llm_call
 from system_prompt.tools import tools
-from system_prompt.worker_1_prompt import planner_prompt
+from system_prompt.planner_prompt import planner_prompt
 
 def planner_worker(message: str) -> str:
+    from system_prompt.workers import workers
     messages = [
         {"role": "system", "content": planner_prompt},
     ]
@@ -27,7 +28,7 @@ def planner_worker(message: str) -> str:
                     if tool_name:
                         if tools.get(tool_name):
                             output = tools[tool_name].get("fn")(tool_input)
-                            print(colored(f"tool called: {tool_name}, input: {tool_input}, output: {output} \n\n", "red"))
+                            print(colored(f"tool called: {tool_name}, input: {tool_input} \n", "green"))
                             messages.append({
                                 "role": "assistant",
                                 "content": json.dumps({
@@ -35,12 +36,24 @@ def planner_worker(message: str) -> str:
                                     "output": output
                                 })
                             })
-
-                            if output == "The plan is ready":
-                                print(colored("✅ Plan created. Exiting...", "green"))
+                            continue
+                        
+                        if workers.get(tool_name):
+                            output = workers[tool_name].get("fn")(tool_input)
+                            print(f"planner output: {output}")
+                            messages.append({
+                                "role": "assistant",
+                                "content": json.dumps({
+                                    "agent": tool_name,
+                                    "output": output
+                                })
+                            })
+                            
+                            # 🔥 check if documentation is done
+                            if tool_name == "docsfish":
+                                print(colored("✅ Documentation created. Exiting...", "green"))
                                 break
                             continue
-
                     continue
             break
 

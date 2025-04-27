@@ -39,7 +39,7 @@ def generate_tree(directory, prefix="", skip_names=None, skip_endings=None):
     Recursively generate a tree structure string for a given directory.
     """
     if skip_names is None:
-        skip_names = {"node_modules", "venv", "static", "media", "asset", ".DS_Store"}
+        skip_names = {"node_modules", "venv", "static", "media", "asset", ".DS_Store", "__pycache__", "__init__"}
     if skip_endings is None:
         skip_endings = {".git", ".github", ".idea", ".vscode", ".gitignore", ".env"}
 

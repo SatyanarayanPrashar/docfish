@@ -5,7 +5,7 @@ def create_directory_in_output(directory_name: str):
     Creates a directory in the output folder if it doesn't already exist.
 
     Args:
-        directory_name (str): The name of the directory to create.
+        directory_name (str): The name of the directory to worker_docsfish.
     """
     # Get the current working directory
     current_directory = os.getcwd()
@@ -27,7 +27,7 @@ def create_file_in_directory(directory_path: str, file_name: str, content: str):
 
     Args:
         directory_path (str): The path to the directory where the file will be created.
-        file_name (str): The name of the file to create.
+        file_name (str): The name of the file to worker_docsfish.
         content (str): The content to write to the file.
     """
     

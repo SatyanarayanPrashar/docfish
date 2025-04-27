@@ -4,11 +4,11 @@ system_prompt = """
     #Approach to Work
     - Always respond in json following the Output json schema given at the end. Donot return anything extra or less.
     - Fulfill your mission of documenting using all the tools and workers available to you.
-    - Ask the planner_worker to create a plan for the documentation process of a codebase.
+    - Ask the planner_worker to worker_docsfish a plan for the documentation process of a codebase.
     - Once the plan is created, ask the executor_worker to execute the plan.
 
     #workers:
-    - planner_worker: He is responsible to create the plan for the documentation process of a codebase.
+    - planner_worker: He is responsible to worker_docsfish the plan for the documentation process of a codebase.
     - executor_worker: He is responsible to execute the plan created by the planner.
 
     #Tools:

@@ -1,22 +1,34 @@
 Agentic-Ai-Project
-    ├── README.md                  [ig]
-    ├── app.py                     [visited]
-    ├── requirements.txt           [visited]
-    └── src                       [visited]
-        ├── __init__.py           [ig]
-        ├── __pycache__           [visited]
-        └── langgraphagenticai    [visited]
-            ├── LLMS               [visited]
+    [1;32m├── README.md         [ig]
+    ├── app.py           [visited]
+    ├── requirements.txt  [visited]
+    └── src
+        ├── __init__.py   [ig]
+        └── langgraphagenticai
+            ├── LLMS
+            │   ├── __init__.py   [ig]
+            │   └── groqllm.py      [visited]
             ├── __init__.py       [ig]
-            ├── __pycache__       [visited]
-            ├── graph              [visited]
+            ├── graph
+            │   ├── __init__.py   [ig]
+            │   └── graph_builder.py [visited]
             ├── main.py           [visited]
-            ├── nodes              [visited]
-            ├── state              [visited]
-            ├── tools              [visited]
-            └── ui                [visited]
-                ├── __init__.py     [ig]
-                ├── __pycache__     [visited]
-                ├── streamlitui      [visited]
-                └── uiconfigfile.py  [visited]
-        └── vectorstore          [visited]
+            ├── nodes
+            │   ├── __init__.py   [ig]
+            │   ├── basic_chatbot_node.py [visited]
+            │   └── chatbot_with_Tool_node.py [visited]
+            ├── state
+            │   ├── __init__.py   [ig]
+            │   └── state.py      [visited]
+            ├── tools
+            │   ├── __init__.py   [ig]
+            │   └── serach_tool.py [visited]
+            ├── ui
+            │   ├── __init__.py   [ig]
+            │   ├── streamlitui
+            │   │   ├── display_result.py [visited]
+            │   │   └── loadui.py      [visited]
+            │   └── uiconfigfile.ini [ig]
+            └── uiconfigfile.py  [visited]
+        └── vectorstore
+            └── __init__.py  [ig]
