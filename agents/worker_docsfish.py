@@ -9,29 +9,29 @@ from system_prompt.docsfish_prompt import system_prompt
 from tools.generate_streamlit_pages import generate_pages
 from tools.structure_tools import list_output_structure
 
+messages = [
+    {"role": "system", "content": system_prompt},
+]
+
 def worker_docsfish(git_url: str, mssg: str = "Create me the documentation for this codebase"):
     from system_prompt.workers import workers
 
     print(git_url)
 
-    if git_url:
-        try:
-            repo_name = git_url.split('/')[-1].replace('.git', '')
-            output_dir = os.path.join(os.getcwd(), "clone_repos")
-            code_path = os.path.join(output_dir, repo_name)
+    # if git_url:
+    #     try:
+    #         repo_name = git_url.split('/')[-1].replace('.git', '')
+    #         output_dir = os.path.join(os.getcwd(), "clone_repos")
+    #         code_path = os.path.join(output_dir, repo_name)
 
-            run_command(f"git clone {git_url} {code_path}")
-        except Exception as e:
-            print(f"Error cloning repository: {e}")
-            return
+    #         run_command(f"git clone {git_url} {code_path}")
+    #     except Exception as e:
+    #         print(f"Error cloning repository: {e}")
+    #         return
 
-        generate_embedding(code_path=code_path, repo_name="attendanceSystem.git")
+    #     generate_embedding(code_path=code_path, repo_name="attendanceSystem.git")
 
     structure_tree = list_output_structure() 
-
-    messages = [
-        {"role": "system", "content": system_prompt},
-    ]
     messages.append({ "role": "user", "content": mssg + "\n" + structure_tree })
 
     while True:
@@ -66,13 +66,13 @@ def worker_docsfish(git_url: str, mssg: str = "Create me the documentation for t
                             continue
 
                         if workers.get(tool_name):
-                            output = workers[tool_name].get("fn")(tool_input)
+                            workers[tool_name].get("fn")(tool_input)
                             print(f"planner output: {output}")
                             messages.append({
                                 "role": "assistant",
                                 "content": json.dumps({
                                     "agent": tool_name,
-                                    "output": output
+                                    "output": "Plan created successfully.",
                                 })
                             })
                             

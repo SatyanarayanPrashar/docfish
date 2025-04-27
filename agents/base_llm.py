@@ -9,7 +9,7 @@ openai.api_key = api_key
 
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-def base_llm_call(messages: list, model: str = "gpt-4o-mini"):
+def base_llm_call(messages: list, model: str = "o4-mini"):
     """
     Calls the OpenAI API with the provided messages and model.
     
